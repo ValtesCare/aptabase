@@ -16,6 +16,7 @@ public class SmtpEmailClient : IEmailClient
     public async Task SendEmailAsync(string to, string subject, string templateName, Dictionary<string, string>? properties, CancellationToken cancellationToken)
     {
         using var smtp = new SmtpClient();
+        smtp.CheckCertificateRevocation = false;
         await smtp.ConnectAsync(_env.SmtpHost, _env.SmtpPort, IsTLSPort(_env.SmtpPort), cancellationToken);
 
         if (!string.IsNullOrEmpty(_env.SmtpUsername))
